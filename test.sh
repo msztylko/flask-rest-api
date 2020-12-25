@@ -1,14 +1,19 @@
-# GET TaskList
-curl http://0.0.0.0:5000/tasks -v
+echo GET TaskList
+curl http://0.0.0.0:5000/tasks 
+echo
 
-# POST new task
-curl http://0.0.0.0:5000/tasks -d "task=be awesome" -X POST -v
+echo POST new task
+curl http://0.0.0.0:5000/tasks -d "task=be awesome" -X POST
+echo
 
-# GET single Task
+echo GET single Task
 curl http://0.0.0.0:5000/tasks/task2
+echo
 
-# DELETE single Task
-curl http://0.0.0.0:5000/tasks/task5 -X DELETE -v
+echo DELETE single Task
+curl http://0.0.0.0:5000/tasks/task5 -X DELETE
+echo
 
-# PUT update task
+echo PUT update task
 curl http://0.0.0.0:5000/tasks/task3 -d "task=write great code" -X PUT
+echo

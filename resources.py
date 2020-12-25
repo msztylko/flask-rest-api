@@ -33,7 +33,7 @@ class TaskList(Resource):
     def get(self):
         return TASKS
 
-    def post(self, task_id):
+    def post(self):
         args = parser.parse_args()
         task_id = len(TASKS) + 1
         task_id = f'task_id{task_id}'
