@@ -1,43 +1,82 @@
 from flask import Flask, request
 from flask_restful import Api, Resource, fields, marshal_with, reqparse, abort
+from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
 api = Api(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+db = SQLAlchemy(app)
 
-TASKS = {
-    'task1': {'task': 'build an API'},
-    'task2': {'task': '???????'},
-    'task3': {'task': 'profit!'}
-}
+# Database Models
 
-def abort_if_task_doesnt_exist(task_id):
-    if task_id not in TASKS:
-        abort(404, message=f'Task {task_id} doesnt exist')
+class TaskModel(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    task = db.Column(db.String(100), nullable=False)
+
+    def __repr__(self):
+        return f'Task {self.id} created.'
+
+# Create database
+# Do it after defining your model
+# db.create_all()
+
 
 parser = reqparse.RequestParser()
 parser.add_argument('task')
 
+# Define how database object will be serialized
+resource_fields = {
+    'id': fields.Integer,
+    'task': fields.String
+}
+
 class Task(Resource):
+
+    @marshal_with(resource_fields)
     def get(self, task_id):
-        abort_if_task_doesnt_exist(task_id)
-        return TASKS[task_id]        
+        result = TaskModel.query.filter_by(id=task_id).first()
+        if not result:
+            abort(404, message=f'Could not find task with if {task_id}')
+        return result
 
     def delete(self, task_id):
-        abort_if_task_doesnt_exist(task_id)
-        del TASKS[task_id]
-        return '', 204
+        task = TaskModel.query.get(task_id)
+        if not task:
+            abort(404, message=f'No Task with id {task_id}')
+        db.session.delete(task)
+        db.session.commit()
+        return '', 240
+       #  abort_if_task_doesnt_exist(task_id)
+       #  del TASKS[task_id]
+       #  return '', 204
 
+    #zamienic put na patch
+    @marshal_with(resource_fields)
     def put(self, task_id):
         args = parser.parse_args()
-        task = {'task': args['task']}
-        TASKS[task_id] = task
+        print(task_id, args['task'])
+        result = TaskModel.query.filter_by(id=task_id).first()
+        if result:
+            abort(409, message='Task ID taken...')
+        task = TaskModel(id=task_id, task=args['task'])
+        db.session.add(task)
+        db.session.commit()
         return task, 201
+       #  args = parser.parse_args()
+       #  task = {'task': args['task']}
+       #  TASKS[task_id] = task
+       #  return task, 201
     
 class TaskList(Resource):
+    @marshal_with(resource_fields)
     def get(self):
-        return TASKS
-
+        result = TaskModel.query.all()
+        if not result:
+            abort(404, message=f'Could not get requests tasks')
+        return result
+    
+    @marshal_with(resource_fields)
     def post(self):
         args = parser.parse_args()
         task_id = int(len(TASKS) + 1)
@@ -46,7 +85,7 @@ class TaskList(Resource):
         return TASKS[task_id], 201
 
 # SETUP API
-api.add_resource(Task, '/tasks/<task_id>')
+api.add_resource(Task, '/tasks/<int:task_id>')
 api.add_resource(TaskList, '/tasks')
 
 if __name__ == '__main__':
