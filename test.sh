@@ -11,7 +11,7 @@ curl http://0.0.0.0:5000/tasks/task2
 echo
 
 echo DELETE single Task
-curl http://0.0.0.0:5000/tasks/task5 -X DELETE
+curl http://0.0.0.0:5000/tasks/task4 -X DELETE
 echo
 
 echo PUT update task
