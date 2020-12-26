@@ -8,8 +8,13 @@ A short project about REST APIs related to my [other project](https://github.com
 
 ## API description
 
-- todo
-
+| EndPoint | Functionality
+|----------|--------------
+| GET /tasks | List all tasks
+| POST /tasks | Create a new task
+| GET /tasks/<task_id> | Get single task with specific ID
+| PUT /tasks/<task_id> | Update specific task
+| DELETE /tasks/<task_id> | Delete a task
 
 ## INSTALL
 
