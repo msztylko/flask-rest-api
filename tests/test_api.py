@@ -1,5 +1,5 @@
-import requests
 import pytest
+import requests
 
 base_url = 'http://0.0.0.0:5000/'
 
