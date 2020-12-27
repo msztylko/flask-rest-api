@@ -55,11 +55,10 @@ class Task(Resource):
     @marshal_with(resource_fields)
     def put(self, task_id):
         args = parser.parse_args()
-        print(task_id, args['task'])
-        result = TaskModel.query.filter_by(id=task_id).first()
-        if result:
-            abort(409, message='Task ID taken...')
-        task = TaskModel(id=task_id, task=args['task'])
+        task = TaskModel.query.filter_by(id=task_id).first()
+        if not task:
+            abort(409, message=f'Could not find task with ID {task_id}')
+        task.task = args['task']
         db.session.add(task)
         db.session.commit()
         return task, 201
@@ -79,10 +78,14 @@ class TaskList(Resource):
     @marshal_with(resource_fields)
     def post(self):
         args = parser.parse_args()
-        task_id = int(len(TASKS) + 1)
-        task_id = f'task{task_id}'
-        TASKS[task_id] = {'task': args['task']}
-        return TASKS[task_id], 201
+        task = TaskModel(task=args['task'])
+        db.session.add(task)
+        db.session.commit()
+        return task, 201
+       #  task_id = int(len(TASKS) + 1)
+       #  task_id = f'task{task_id}'
+       #  TASKS[task_id] = {'task': args['task']}
+       #  return TASKS[task_id], 201
 
 # SETUP API
 api.add_resource(Task, '/tasks/<int:task_id>')
