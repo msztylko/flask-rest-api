@@ -47,11 +47,7 @@ class Task(Resource):
         db.session.delete(task)
         db.session.commit()
         return '', 240
-       #  abort_if_task_doesnt_exist(task_id)
-       #  del TASKS[task_id]
-       #  return '', 204
 
-    #zamienic put na patch
     @marshal_with(resource_fields)
     def put(self, task_id):
         args = parser.parse_args()
@@ -62,10 +58,6 @@ class Task(Resource):
         db.session.add(task)
         db.session.commit()
         return task, 201
-       #  args = parser.parse_args()
-       #  task = {'task': args['task']}
-       #  TASKS[task_id] = task
-       #  return task, 201
     
 class TaskList(Resource):
     @marshal_with(resource_fields)
@@ -82,10 +74,6 @@ class TaskList(Resource):
         db.session.add(task)
         db.session.commit()
         return task, 201
-       #  task_id = int(len(TASKS) + 1)
-       #  task_id = f'task{task_id}'
-       #  TASKS[task_id] = {'task': args['task']}
-       #  return TASKS[task_id], 201
 
 # SETUP API
 api.add_resource(Task, '/tasks/<int:task_id>')
