@@ -20,12 +20,19 @@ A short project about REST APIs related to my [other project](https://github.com
 
 If you want to try it yourself:
 
-- todo
+1. `git clone https://github.com/msztylko/flask-rest-api.git && cd flask-rest-api`
+2. `python3 -m virtualenv venv`
+3. `source venv/bin/activate`
+4. `pip install -r requirements.txt`
+5. `python initial_db.py`
+6. `python api.py`
 
 ### Run with Docker
 
-- todo
+After cloning the repo:
+1. `docker build -t flask-rest-api .`  
+2. `docker run -p 5000:5000 flask-rest-api`
 
 ## Test 
 
-- todo
+Start application and from another terminal run `pytest`. You can also use simpler `test.sh` file which demonstrates basic usage with curl.
