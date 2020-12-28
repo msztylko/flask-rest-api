@@ -16,10 +16,6 @@ class TaskModel(db.Model):
     def __repr__(self):
         return f'Task {self.id} created.'
 
-# Create database
-# Do it after defining your model
-# db.create_all()
-
 
 parser = reqparse.RequestParser()
 parser.add_argument('task')
