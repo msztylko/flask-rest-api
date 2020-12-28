@@ -24,5 +24,5 @@ def test_delete_task_id():
     # Get ID of the last existing task to delete it
     to_delete = requests.get(base_url + 'tasks').json()[-1]['id']
     response = requests.delete(base_url + f'tasks/{to_delete}')
-    assert response.status_code == 240
+    assert response.status_code == 204
 

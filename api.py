@@ -36,23 +36,23 @@ class Task(Resource):
     def get(self, task_id):
         result = TaskModel.query.filter_by(id=task_id).first()
         if not result:
-            abort(404, message=f'Could not find task with if {task_id}')
-        return result
+            abort(404, message=f'Could not find task with id {task_id}')
+        return result, 200
 
     def delete(self, task_id):
         task = TaskModel.query.get(task_id)
         if not task:
-            abort(404, message=f'No Task with id {task_id}')
+            abort(404, message=f'Could not find task with id {task_id}')
         db.session.delete(task)
         db.session.commit()
-        return '', 240
+        return '', 204
 
     @marshal_with(resource_fields)
     def put(self, task_id):
         args = parser.parse_args()
         task = TaskModel.query.filter_by(id=task_id).first()
         if not task:
-            abort(409, message=f'Could not find task with ID {task_id}')
+            abort(404, message=f'Could not find task with ID {task_id}')
         task.task = args['task']
         db.session.add(task)
         db.session.commit()
@@ -64,7 +64,7 @@ class TaskList(Resource):
         result = TaskModel.query.all()
         if not result:
             abort(404, message=f'Could not get requests tasks')
-        return result
+        return result, 200
     
     @marshal_with(resource_fields)
     def post(self):
