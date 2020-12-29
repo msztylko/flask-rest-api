@@ -55,6 +55,7 @@ class Task(Resource):
         return task, 201
     
 class TaskList(Resource):
+
     @marshal_with(resource_fields)
     def get(self):
         result = TaskModel.query.all()
