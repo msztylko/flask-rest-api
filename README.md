@@ -1,9 +1,7 @@
 # flask-rest-api
 
-A simple REST API in Flask written for Task Manager webservice
-
 <p align="center">
-A simple Task Manager website in Flask
+A simple REST API in Flask written for Task Manager webservice
 <img src="https://github.com/msztylko/flask-rest-api/blob/master/images/flask-rest-api.gif" data-canonical- width="800" height="400" align="center" />
 </p>
 
